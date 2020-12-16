@@ -48,6 +48,7 @@ namespace MLAPI
         // RuntimeAccessModifiersILPP will make this `protected`
         internal BitWriter BeginSendServerRpc(ServerRpcSendParams sendParams, bool isReliable)
         {
+            // @mfatihmar (Unity) Begin: Temporary, placeholder implementation
             RPCQueueManager rpcQueueMananger = NetworkingManager.Singleton.GetRPCQueueManager();
             if(rpcQueueMananger != null)
             {
@@ -55,13 +56,14 @@ namespace MLAPI
 
                 writer.WriteBit(false); // Encrypted
                 writer.WriteBit(false); // Authenticated
-                writer.WriteBits(MLAPIConstants.MLAPI_SERVER_RPC, 6); // MessageType
+                writer.WriteBits(MLAPIConstants.MLAPI_STD_SERVER_RPC, 6); // MessageType
                 writer.WriteUInt64Packed(NetworkId); // NetworkObjectId
                 writer.WriteUInt16Packed(GetBehaviourId()); // NetworkBehaviourId
 
                 return writer;
             }
             return null;
+            // @mfatihmar (Unity) End: Temporary, placeholder implementation
         }
 
         // RuntimeAccessModifiersILPP will make this `protected`
@@ -86,7 +88,7 @@ namespace MLAPI
                 var writer = rpcQueueMananger.BeginAddQueueItemToOutboundFrame(RPCQueueManager.QueueItemType.ClientRPC, Time.realtimeSinceStartup, StandardRPC_Channel,0, NetworkId,sendParams.TargetClientIds == null ? InternalMessageSender.GetAllClientIds().ToArray() :  sendParams.TargetClientIds);
                 writer.WriteBit(false); // Encrypted
                 writer.WriteBit(false); // Authenticated
-                writer.WriteBits(MLAPIConstants.MLAPI_CLIENT_RPC, 6); // MessageType
+                writer.WriteBits(MLAPIConstants.MLAPI_STD_CLIENT_RPC, 6); // MessageType
                 writer.WriteUInt64Packed(NetworkId); // NetworkObjectId
                 writer.WriteUInt16Packed(GetBehaviourId()); // NetworkBehaviourId
 
