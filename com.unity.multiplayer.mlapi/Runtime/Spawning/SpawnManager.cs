@@ -413,7 +413,7 @@ namespace MLAPI.Spawning
 
             RPCQueueManager rpcQueueManager = NetworkingManager.Singleton.GetRPCQueueManager();
             if(rpcQueueManager != null)
-            { 
+            {
 
                 PooledBitStream stream = PooledBitStream.Get();
                 WriteSpawnCallForObject(stream, clientId, netObject, payload);
@@ -424,9 +424,17 @@ namespace MLAPI.Spawning
                 QueueItem.NetworkId = 0;
                 QueueItem.ItemStream = stream;
                 QueueItem.Channel = "MLAPI_INTERNAL";
-                QueueItem.SendFlags = SecuritySendFlags.None;                
+                QueueItem.SendFlags = SecuritySendFlags.None;
+                //QueueItem.NetworkObject = null;
                 QueueItem.ClientIds = new List<ulong>() { clientId };
                 rpcQueueManager.AddToInternalMLAPISendQueue(QueueItem);
+
+
+                //using (PooledBitStream stream = PooledBitStream.Get())
+                //{
+                //    WriteSpawnCallForObject(stream, clientId, netObject, payload);
+                //    InternalMessageSender.Send(clientId, MLAPIConstants.MLAPI_ADD_OBJECT, "MLAPI_INTERNAL", stream, SecuritySendFlags.None, null);
+                //}
             }
 
         }
@@ -658,7 +666,7 @@ namespace MLAPI.Spawning
 
                 RPCQueueManager rpcQueueManager = NetworkingManager.Singleton.GetRPCQueueManager();
                 if(rpcQueueManager != null)
-                { 
+                {
 
                     if (sobj != null)
                     {
@@ -675,7 +683,7 @@ namespace MLAPI.Spawning
                             QueueItem.NetworkId = networkId;
                             QueueItem.ItemStream = stream;
                             QueueItem.Channel = "MLAPI_INTERNAL";
-                            QueueItem.SendFlags = SecuritySendFlags.None;                       
+                            QueueItem.SendFlags = SecuritySendFlags.None;
                             QueueItem.ClientIds = InternalMessageSender.GetAllClientIds();
                             rpcQueueManager.AddToInternalMLAPISendQueue(QueueItem);
 
