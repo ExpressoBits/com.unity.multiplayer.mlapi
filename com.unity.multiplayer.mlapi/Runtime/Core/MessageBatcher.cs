@@ -106,10 +106,10 @@ namespace MLAPI
                     {
                         // 6 bits are used for the message type, which is an MLAPIConstants
                         case RPCQueueManager.QueueItemType.ServerRPC:
-                            Writer.WriteBits(MLAPIConstants.MLAPI_STD_SERVER_RPC, 6); // MessageType
+                            Writer.WriteBits(MLAPIConstants.MLAPI_SERVER_RPC, 6); // MessageType
                             break;
                         case RPCQueueManager.QueueItemType.ClientRPC:
-                            Writer.WriteBits(MLAPIConstants.MLAPI_STD_CLIENT_RPC, 6); // MessageType
+                            Writer.WriteBits(MLAPIConstants.MLAPI_CLIENT_RPC, 6); // MessageType
                             break;
                     }
                 }

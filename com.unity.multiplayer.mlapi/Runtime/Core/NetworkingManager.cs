@@ -1192,12 +1192,6 @@ namespace MLAPI
                             #endif
                             break;
                         }
-                    case MLAPIConstants.MLAPI_SERVER_RPC_REQUEST:
-                        if (IsServer) InternalMessageHandler.HandleServerRPCRequest(clientId, messageStream, channelName, security);
-                        break;
-                    case MLAPIConstants.MLAPI_SERVER_RPC_RESPONSE:
-                        if (IsClient) InternalMessageHandler.HandleServerRPCResponse(clientId, messageStream);
-                        break;
                     case MLAPIConstants.MLAPI_CLIENT_RPC:
                         {
                             if (IsClient)
@@ -1214,20 +1208,6 @@ namespace MLAPI
                             }
                             break;
                         }
-                    case MLAPIConstants.MLAPI_CLIENT_RPC_REQUEST:
-                        if (IsClient) InternalMessageHandler.HandleClientRPCRequest(clientId, messageStream, channelName, security, BufferCallback, new PreBufferPreset()
-                        {
-                            AllowBuffer = allowBuffer,
-                            ChannelName = channelName,
-                            ClientId = clientId,
-                            Data = data,
-                            MessageType = messageType,
-                            ReceiveTime = receiveTime
-                        });
-                        break;
-                    case MLAPIConstants.MLAPI_CLIENT_RPC_RESPONSE:
-                        if (IsServer) InternalMessageHandler.HandleClientRPCResponse(clientId, messageStream);
-                        break;
                     case MLAPIConstants.MLAPI_UNNAMED_MESSAGE:
                         InternalMessageHandler.HandleUnnamedMessage(clientId, messageStream);
                         break;
@@ -1251,24 +1231,6 @@ namespace MLAPI
                     case MLAPIConstants.MLAPI_SERVER_LOG:
                         if (IsServer && NetworkConfig.EnableNetworkLogs) InternalMessageHandler.HandleNetworkLog(clientId, messageStream);
                         break;
-                    case MLAPIConstants.MLAPI_STD_SERVER_RPC:
-                    {
-                        if (IsServer)
-                        {
-                            batcher.ReceiveItems(messageStream, ReceiveCallback, RPCQueueManager.QueueItemType.ServerRPC, clientId, receiveTime);
-                        }
-                        ProfilerStatManager.rpcBatchesRcvd.Record();
-                        break;
-                    }
-                    case MLAPIConstants.MLAPI_STD_CLIENT_RPC:
-                    {
-                        if (IsClient)
-                        {
-                            batcher.ReceiveItems(messageStream, ReceiveCallback, RPCQueueManager.QueueItemType.ClientRPC, clientId, receiveTime);
-                        }
-                        ProfilerStatManager.rpcBatchesRcvd.Record();
-                        break;
-                    }
                     default:
                         if (NetworkLog.CurrentLogLevel <= LogLevel.Error) NetworkLog.LogError("Read unrecognized messageType " + messageType);
                         break;
